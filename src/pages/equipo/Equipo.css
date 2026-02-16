@@ -1,0 +1,31 @@
+.equipo-boton {
+    background-color: #09153E;
+    color: #E9EDFC;
+    border: solid .5px #E9EDFC;
+    padding: 20px;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+.equipo-boton:hover {
+    background-color: #E9EDFC;
+    border: solid .5px #09153E;
+    color: #09153E;
+    transition: ease .3s;
+}
+
+.equipo-boton-eliminar {
+    background-color: #E9EDFC;
+    color: #09153E;
+    border: solid .5px #E9EDFC;
+    padding: 20px;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+.equipo-boton-eliminar:hover {
+    background-color: #09153E;
+    border: solid .5px #E9EDFC;
+    color: #E9EDFC;
+    transition: ease .3s;
+}

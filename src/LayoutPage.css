@@ -1,0 +1,15 @@
+.layout-boton {
+    background-color: #E9EDFC;
+    color: #09153E;
+    border: none;
+    padding: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.layout-boton:hover,
+.layout-boton:focus {
+    background-color: #09153E;
+    color: #E9EDFC;
+    transition: ease .3s;
+}
