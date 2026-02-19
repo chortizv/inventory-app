@@ -14,3 +14,20 @@
     color: #09153E;
     transition: ease .3s;
 }
+
+.funcionario-boton-eliminar {
+    background-color: #09153E;
+    color: #E9EDFC;
+    border: solid .5px #E9EDFC;
+    padding: 20px;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+.funcionario-boton-eliminar:hover,
+.funcionario-boton-eliminar:focus {
+    background-color: #E9EDFC;
+    border: solid .5px #09153E;
+    color: #09153E;
+    transition: ease .3s;
+}

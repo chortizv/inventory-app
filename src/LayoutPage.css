@@ -13,3 +13,9 @@
     color: #E9EDFC;
     transition: ease .3s;
 }
+
+
+.layout-logo {
+    width: 100%;
+    height: auto;
+}

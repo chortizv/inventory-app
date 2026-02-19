@@ -1,9 +1,13 @@
 import { Breadcrumb, theme, Table, Input, Button, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import { getEquipos, getEquipoBySerie } from '../../services/equipoService';
+import { getEquiposDescripcion, getEquipoBySerie } from '../../services/equipoService';
 import "./Equipo.css";
 import ModalEliminar from '../../components/ModalEliminar';
 import ModalAgregar from '../../components/ModalAgregar';
+import {
+    DeleteOutlined,
+    PlusOutlined
+} from '@ant-design/icons';
 
 const Equipo = () => {
 
@@ -79,9 +83,22 @@ const Equipo = () => {
         setSerieSeleccionada(null);
     };
 
-    // ===============================
-    // TABLA
-    // ===============================
+    const getEstadoColor = (descripcion) => {
+        switch (descripcion) {
+            case "Asignado":
+                return "#0fac1aff";
+            case "Mantencion":
+                return "#ac009dff";
+            case "Disponible":
+                return "#0f41acff";
+            case "Backup":
+                return "#f18406ff";
+            case "Desvinculado":
+                return "default";
+            default:
+                return "default";
+        }
+    };
 
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -105,29 +122,36 @@ const Equipo = () => {
         },
         {
             title: "Modelo",
-            dataIndex: "id_modelo",
+            dataIndex: "descripcionModelo",
             key: "id_modelo"
         },
         {
             title: "Estado",
-            dataIndex: "id_estado",
-            key: "id_estado"
+            dataIndex: "descripcionEstado",
+            key: "id_estado",
+            render: (text) => (
+                // outlined, solid, filled
+                <Tag variant='outlined' color={getEstadoColor(text)}>
+                    {text}
+                </Tag>
+            )
         },
         {
             title: "Contrato",
-            dataIndex: "id_contrato",
+            dataIndex: "descripcionContrato",
             key: "id_contrato"
         },
         {
-            title: 'Action',
+            title: 'Accion',
             key: 'action',
             render: (_, record) => (
                 <Tag
                     color="red"
+                    variant='outlined'
                     style={{ cursor: "pointer" }}
                     onClick={() => handleEliminar(record.serie)}
                 >
-                    Eliminar
+                    <DeleteOutlined /> Eliminar
                 </Tag>
             ),
         },
@@ -135,7 +159,7 @@ const Equipo = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getEquipos();
+            const data = await getEquiposDescripcion();
             setEquipos(data);
         };
         fetchData();
@@ -146,7 +170,10 @@ const Equipo = () => {
         return (
             item.serie?.toLowerCase().includes(value) ||
             item.nombre?.toLowerCase().includes(value) ||
-            item.observacion?.toLowerCase().includes(value)
+            item.observacion?.toLowerCase().includes(value) ||
+            item.descripcionModelo?.toLowerCase().includes(value) ||
+            item.descripcionEstado?.toLowerCase().includes(value) ||
+            item.descripcionContrato?.toLowerCase().includes(value)
         );
     });
 
@@ -180,7 +207,7 @@ const Equipo = () => {
                     onClick={showModalAgregar}
                     style={{ marginBottom: 16 }}
                 >
-                    Agregar equipo
+                    <PlusOutlined /> Agregar equipo
                 </Button>
 
                 <Table

@@ -10,6 +10,16 @@ export const getEquipos = async () => {
     }
 };
 
+export const getEquiposDescripcion = async () => {
+    try {
+        const response = await axiosInstance.get("/Equipo/equipos-descripcion");
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener equipos:", error);
+        throw error;
+    }
+};
+
 export const getEquipoBySerie = async (serie) => {
     try {
         const response = await axiosInstance.get(`/Equipo/equipo/${serie}`);

@@ -9,3 +9,13 @@ export const getFuncionarios = async () => {
         throw error;
     }
 };
+
+export const getHistorialFuncionario = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/Funcionario/historial/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener historial de funcionario:", error);
+        throw error;
+    }
+};

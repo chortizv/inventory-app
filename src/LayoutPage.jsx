@@ -3,7 +3,8 @@ import {
     DesktopOutlined,
     TeamOutlined,
     UserOutlined,
-    SettingOutlined
+    SettingOutlined,
+    ForkOutlined
 } from '@ant-design/icons';
 import { getItem } from './components/GetItem'
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
@@ -12,6 +13,7 @@ import Funcionario from './pages/funcionario/Funcionario';
 import Usuario from './pages/usuario/Usuario';
 import { useNavigate } from "react-router-dom";
 import './LayoutPage.css';
+import logo from "../public/logo.webp";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -19,13 +21,14 @@ const items = [
     getItem('Equipos', '1', <DesktopOutlined />),
     getItem('Funcionarios', '2', <TeamOutlined />),
     getItem('Usuarios', '3', <UserOutlined />),
+    getItem('Asignaciones', '4', <ForkOutlined />),
     getItem('Administrador', 'sub1', <SettingOutlined />, [
-        getItem('Marca', '4'),
-        getItem('Modelo', '5'),
-        getItem('Tipo Modelo', '6'),
-        getItem('Estado', '7'),
-        getItem('Contrato', '8'),
-        getItem('Departamento', '9'),
+        getItem('Marca', '5'),
+        getItem('Modelo', '6'),
+        getItem('Tipo Modelo', '7'),
+        getItem('Estado', '8'),
+        getItem('Contrato', '9'),
+        getItem('Departamento', '10'),
         getItem('Subdepartamento', '10'),
         getItem('Seccion', '11'),
         getItem('Prioridad', '12'),
@@ -63,6 +66,7 @@ const LayoutPage = () => {
                 <div className="demo-logo-vertical" />
                 {/* defaultSelectedKeys={['1']} */}
                 <button className='layout-boton' onClick={logout}>← Cerrar sesión</button>
+                <img className='layout-logo' src={logo} alt="logo" />
                 <Menu theme="dark" selectedKeys={[currentPage]} mode="inline" items={items} onClick={handleMenuClick} />
             </Sider>
             <Layout>

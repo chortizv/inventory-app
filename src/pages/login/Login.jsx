@@ -2,7 +2,7 @@ import { login } from '../../services/usuarioService';
 import './../../Login.css';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
-import logo from "../../../public/logo.png";
+import logo from "../../../public/logo.webp";
 import { useEffect, useState } from 'react';
 
 const Login = ({ setIsAuthenticated }) => {
