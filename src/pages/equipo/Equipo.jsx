@@ -1,11 +1,12 @@
-import { Breadcrumb, theme, Table, Input, Button, Tag } from 'antd';
+import { Breadcrumb, theme, Table, Input, Button, Tag, message, Space, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import { getEquiposDescripcion, getEquipoBySerie } from '../../services/equipoService';
+import { getEquiposDescripcion, getEquipoBySerie, postEquipo } from '../../services/equipoService';
 import "./Equipo.css";
-import ModalEliminar from '../../components/ModalEliminar';
-import ModalAgregar from '../../components/ModalAgregar';
+import ModalAgregar from './ModalAgregar';
+import ModalEliminar from './ModalEliminar';
 import {
     DeleteOutlined,
+    EyeOutlined,
     PlusOutlined
 } from '@ant-design/icons';
 
@@ -25,16 +26,32 @@ const Equipo = () => {
     const [equipoDetalle, setEquipoDetalle] = useState(null);
     const [loadingDetalle, setLoadingDetalle] = useState(false);
 
-    // ===============================
-    // MODAL AGREGAR
-    // ===============================
-
     const showModalAgregar = () => {
         setOpenAgregar(true);
     };
 
-    const handleOkAgregar = () => {
-        setConfirmLoadingAgregar(true);
+    const handleOkAgregar = async (data) => {
+
+        try {
+            console.log(data);
+            const response = await postEquipo(data);
+            console.log(response);
+
+            if (response.status === 200) {
+                // message.success("Equipo agregado correctamente");
+                setOpenAgregar(false);
+                setConfirmLoadingAgregar(false);
+            } else {
+                // message.error("Error al agregar equipo");
+                setOpenAgregar(false);
+                setConfirmLoadingAgregar(false);
+            }
+        } catch (error) {
+            // console.error("Error al agregar equipo:", error);
+            message.error("Error al con el servidor");
+            setOpenAgregar(false);
+            setConfirmLoadingAgregar(false);
+        }
 
         setTimeout(() => {
             setOpenAgregar(false);
@@ -45,10 +62,6 @@ const Equipo = () => {
     const handleCancelAgregar = () => {
         setOpenAgregar(false);
     };
-
-    // ===============================
-    // MODAL ELIMINAR
-    // ===============================
 
     const handleEliminar = async (serie) => {
         try {
@@ -66,15 +79,31 @@ const Equipo = () => {
         }
     };
 
-    const handleOkEliminar = () => {
-        setConfirmLoadingEliminar(true);
+    const handleOkEliminar = async (equipoDetalle) => {
+        try {
+            setConfirmLoadingEliminar(true);
+            const response = await eliminarEquipo(equipoDetalle.serie);
+            console.log(response);
 
-        setTimeout(() => {
+            if (response.status === 200) {
+                setOpenEliminar(false);
+                setConfirmLoadingEliminar(false);
+                setEquipoDetalle(null);
+                setSerieSeleccionada(null);
+            } else {
+                setOpenEliminar(false);
+                setConfirmLoadingEliminar(false);
+                setEquipoDetalle(null);
+                setSerieSeleccionada(null);
+            }
+        } catch (error) {
+            // console.error("Error al eliminar equipo:", error);
+            message.error("Error al con el servidor");
             setOpenEliminar(false);
             setConfirmLoadingEliminar(false);
             setEquipoDetalle(null);
             setSerieSeleccionada(null);
-        }, 1000);
+        }
     };
 
     const handleCancelEliminar = () => {
@@ -104,6 +133,9 @@ const Equipo = () => {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
+    const tieneObservacion = (obs) => {
+        return obs && obs.trim() !== "";
+    };
     const columns = [
         {
             title: "Serie",
@@ -115,11 +147,11 @@ const Equipo = () => {
             dataIndex: "nombre",
             key: "nombre"
         },
-        {
-            title: "Observación",
-            dataIndex: "observacion",
-            key: "observacion"
-        },
+        // {
+        //     title: "Observación",
+        //     dataIndex: "observacion",
+        //     key: "observacion"
+        // },
         {
             title: "Modelo",
             dataIndex: "descripcionModelo",
@@ -145,14 +177,29 @@ const Equipo = () => {
             title: 'Accion',
             key: 'action',
             render: (_, record) => (
-                <Tag
-                    color="red"
-                    variant='outlined'
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleEliminar(record.serie)}
-                >
-                    <DeleteOutlined /> Eliminar
-                </Tag>
+                <Space>
+                    <Tag
+                        color="red"
+                        variant="outlined"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleEliminar(record.serie)}
+                    >
+                        <DeleteOutlined /> Eliminar
+                    </Tag>
+                    {tieneObservacion(record.observacion) && (
+                        <Tooltip
+                            title={record.observacion}
+                            placement="top"
+                        >
+                            <Button
+                                color='primary'
+                                size="small"
+                                variant='outlined'
+                                icon={<EyeOutlined />}
+                            />
+                        </Tooltip>
+                    )}
+                </Space>
             ),
         },
     ];

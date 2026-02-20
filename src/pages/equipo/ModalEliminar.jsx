@@ -1,5 +1,5 @@
 import { Modal, Spin } from "antd";
-import "../pages/equipo/Equipo.css";
+import "./Equipo.css";
 
 const ModalEliminar = ({
     open,
@@ -9,11 +9,17 @@ const ModalEliminar = ({
     equipoDetalle,
     loadingDetalle
 }) => {
+
+    const onSubmit = (equipoDetalle) => {
+        console.log(equipoDetalle);
+        handleOk?.(equipoDetalle);
+    };
+
     return (
         <Modal
             title="Eliminar equipo"
             open={open}
-            onOk={handleOk}
+            onOk={onSubmit}
             confirmLoading={confirmLoading}
             onCancel={handleCancel}
             okText="Eliminar"

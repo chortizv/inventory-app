@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
     DesktopOutlined,
     TeamOutlined,
@@ -7,13 +7,14 @@ import {
     ForkOutlined
 } from '@ant-design/icons';
 import { getItem } from './components/GetItem'
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme } from 'antd';
 import Equipo from './pages/equipo/Equipo';
 import Funcionario from './pages/funcionario/Funcionario';
 import Usuario from './pages/usuario/Usuario';
 import { useNavigate } from "react-router-dom";
 import './LayoutPage.css';
 import logo from "../public/logo.webp";
+import Asignacion from './pages/asignacion/Asignacion';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -29,9 +30,9 @@ const items = [
         getItem('Estado', '8'),
         getItem('Contrato', '9'),
         getItem('Departamento', '10'),
-        getItem('Subdepartamento', '10'),
-        getItem('Seccion', '11'),
-        getItem('Prioridad', '12'),
+        getItem('Subdepartamento', '11'),
+        getItem('Seccion', '12'),
+        getItem('Prioridad', '13'),
     ]),
 ];
 
@@ -39,6 +40,7 @@ const pages = {
     '1': <Equipo />,
     '2': <Funcionario />,
     '3': <Usuario />,
+    '4': <Asignacion />,
 };
 
 const LayoutPage = () => {
