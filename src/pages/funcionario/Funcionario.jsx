@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Breadcrumb, Table, theme, Input, Button, Tag, Space } from 'antd';
-import { getFuncionarios, getHistorialFuncionario } from '../../services/funcionarioService';
+import { eliminarFuncionario, getFuncionarioById, getFuncionarios, getHistorialFuncionario } from '../../services/funcionarioService';
 import {
     DeleteOutlined,
     PlusOutlined,
@@ -23,6 +23,15 @@ const Funcionario = () => {
     const [confirmLoadingEliminar, setConfirmLoadingEliminar] = useState(false);
     const [funcionarioSeleccionado, setFuncionarioSeleccionado] = useState(null);
     const [mensajeError, setMensajeError] = useState('');
+
+    const fetchFuncionarios = async () => {
+        try {
+            const response = await getFuncionarios();
+            setFuncionarios(response);
+        } catch (error) {
+            console.error("Error al obtener funcionarios:", error);
+        }
+    };
 
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -72,12 +81,37 @@ const Funcionario = () => {
         setOpenAgregar(false);
     };
 
-    const handleEliminar = () => {
+    const handleEliminar = async (id) => {
+
+        const data = await getFuncionarioById(id);
+        setFuncionarioSeleccionado(data);
         setOpenEliminar(true);
     };
 
-    const handleOkEliminar = () => {
-        setOpenEliminar(false);
+    const handleOkEliminar = async () => {
+        try {
+            setConfirmLoadingEliminar(true);
+            const response = await eliminarFuncionario(funcionarioSeleccionado[0].id_funcionario);
+            console.log(response);
+
+            if (response.status === 200) {
+                fetchFuncionarios();
+                message.success("Funcionario eliminado correctamente");
+                setOpenEliminar(false);
+                setConfirmLoadingEliminar(false);
+                setFuncionarioSeleccionado(null);
+            } else {
+                message.error("Error al eliminar funcionario");
+                setOpenEliminar(false);
+                setConfirmLoadingEliminar(false);
+                setFuncionarioSeleccionado(null);
+            }
+        } catch (error) {
+            message.error("Error al conectar con el servidor");
+            setOpenEliminar(false);
+            setConfirmLoadingEliminar(false);
+            setFuncionarioSeleccionado(null);
+        }
     };
 
     const handleCancelEliminar = () => {
@@ -164,13 +198,7 @@ const Funcionario = () => {
     });
 
     useEffect(() => {
-        const fetchData = async () => {
-            const data = await getFuncionarios();
-            console.log(data);
-            setFuncionarios(data);
-        };
-
-        fetchData();
+        fetchFuncionarios();
     }, []);
 
     return (
@@ -220,12 +248,14 @@ const Funcionario = () => {
                     handleOk={handleOkAgregar}
                     confirmLoading={confirmLoadingAgregar}
                     handleCancel={handleCancelAgregar}
+                    funcionarioSeleccionado={funcionarioSeleccionado}
                 />
                 <ModalEliminar
                     open={openEliminar}
                     handleOk={handleOkEliminar}
                     confirmLoading={confirmLoadingEliminar}
                     handleCancel={handleCancelEliminar}
+                    funcionarioSeleccionado={funcionarioSeleccionado}
                 />
             </div>
         </>

@@ -8,7 +8,6 @@ import {
     Divider
 } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { useEffect } from "react";
 
 const { Text, Title } = Typography;
 
@@ -46,7 +45,6 @@ const ModalEliminar = ({
                 </div>
             ) : equipoDetalle ? (
                 <>
-                    {/* Título personalizado */}
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 22 }} />
                         <Title level={4} style={{ margin: 0 }}>
@@ -55,28 +53,28 @@ const ModalEliminar = ({
                     </div>
 
                     <Divider />
-
-                    {/* Información del equipo */}
                     <Descriptions column={1} size="small" bordered>
                         <Descriptions.Item label="Serie">
-                            <Text strong>{equipoDetalle.serie}</Text>
+                            <Text strong>{equipoDetalle[0].serie}</Text>
                         </Descriptions.Item>
 
                         <Descriptions.Item label="Nombre">
-                            {equipoDetalle.nombre}
+                            {equipoDetalle[0].nombre}
                         </Descriptions.Item>
 
                         <Descriptions.Item label="Modelo">
-                            <Tag color="blue">
-                                {equipoDetalle.id_modelo}
-                            </Tag>
+                            {equipoDetalle[0].descripcionModelo}
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="Tipo">
+                            {equipoDetalle[0].descripcionTipo}
                         </Descriptions.Item>
                     </Descriptions>
 
                     <Divider />
 
                     <Alert
-                        message="Esta acción no se puede deshacer"
+                        title="Esta acción no se puede deshacer"
                         description="Si eliminas este equipo, la información asociada podría perderse permanentemente."
                         type="error"
                         showIcon

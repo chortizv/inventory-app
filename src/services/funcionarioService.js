@@ -19,3 +19,23 @@ export const getHistorialFuncionario = async (id) => {
         throw error;
     }
 };
+
+export const getFuncionarioById = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/Funcionario/funcionario/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener funcionario:", error);
+        throw error;
+    }
+};
+
+export const eliminarFuncionario = async (id) => {
+    try {
+        const response = await axiosInstance.delete(`/Funcionario/eliminarFuncionario/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al eliminar funcionario:", error);
+        throw error;
+    }
+};
