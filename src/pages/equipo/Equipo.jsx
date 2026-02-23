@@ -1,6 +1,6 @@
 import { Breadcrumb, theme, Table, Input, Button, Tag, message, Space, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
-import { getEquiposDescripcion, getEquipoBySerie, postEquipo } from '../../services/equipoService';
+import { getEquiposDescripcion, getEquipoBySerie, postEquipo, eliminarEquipo } from '../../services/equipoService';
 import "./Equipo.css";
 import ModalAgregar from './ModalAgregar';
 import ModalEliminar from './ModalEliminar';
@@ -26,6 +26,16 @@ const Equipo = () => {
     const [equipoDetalle, setEquipoDetalle] = useState(null);
     const [loadingDetalle, setLoadingDetalle] = useState(false);
 
+    const fetchEquipos = async () => {
+        try {
+            const response = await getEquiposDescripcion();
+            setEquipos(response);
+        } catch (error) {
+            console.error("Error al obtener equipos:", error);
+        }
+    };
+
+
     const showModalAgregar = () => {
         setOpenAgregar(true);
     };
@@ -38,16 +48,18 @@ const Equipo = () => {
             console.log(response);
 
             if (response.status === 200) {
-                // message.success("Equipo agregado correctamente");
+                fetchEquipos();
+                message.success("Equipo agregado correctamente");
+
                 setOpenAgregar(false);
                 setConfirmLoadingAgregar(false);
             } else {
-                // message.error("Error al agregar equipo");
+                message.error("Error al agregar equipo");
                 setOpenAgregar(false);
                 setConfirmLoadingAgregar(false);
             }
         } catch (error) {
-            // console.error("Error al agregar equipo:", error);
+            console.error("Error al agregar equipo:", error);
             message.error("Error al con el servidor");
             setOpenAgregar(false);
             setConfirmLoadingAgregar(false);
@@ -86,19 +98,21 @@ const Equipo = () => {
             console.log(response);
 
             if (response.status === 200) {
+                fetchEquipos();
+                message.success("Equipo eliminado correctamente");
                 setOpenEliminar(false);
                 setConfirmLoadingEliminar(false);
                 setEquipoDetalle(null);
                 setSerieSeleccionada(null);
             } else {
+                message.error("Error al eliminar equipo");
                 setOpenEliminar(false);
                 setConfirmLoadingEliminar(false);
                 setEquipoDetalle(null);
                 setSerieSeleccionada(null);
             }
         } catch (error) {
-            // console.error("Error al eliminar equipo:", error);
-            message.error("Error al con el servidor");
+            message.error("Error al conectar con el servidor");
             setOpenEliminar(false);
             setConfirmLoadingEliminar(false);
             setEquipoDetalle(null);
@@ -174,7 +188,7 @@ const Equipo = () => {
             key: "id_contrato"
         },
         {
-            title: 'Accion',
+            title: 'Acciones',
             key: 'action',
             render: (_, record) => (
                 <Space>
@@ -184,7 +198,7 @@ const Equipo = () => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleEliminar(record.serie)}
                     >
-                        <DeleteOutlined /> Eliminar
+                        <DeleteOutlined />
                     </Tag>
                     {tieneObservacion(record.observacion) && (
                         <Tooltip
@@ -205,11 +219,7 @@ const Equipo = () => {
     ];
 
     useEffect(() => {
-        const fetchData = async () => {
-            const data = await getEquiposDescripcion();
-            setEquipos(data);
-        };
-        fetchData();
+        fetchEquipos();
     }, []);
 
     const filteredEquipos = equipos.filter((item) => {

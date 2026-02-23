@@ -1,10 +1,24 @@
-import { Modal, Input, Select } from "antd";
+import {
+    Modal,
+    Input,
+    Select,
+    Typography,
+    Divider,
+    Row,
+    Col
+} from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import "./Equipo.css";
-import { getContratos, getEstados, getTipoEquipo, getMarcas, getModelosId } from "../../services/equipoService";
+import {
+    getContratos,
+    getEstados,
+    getTipoEquipo,
+    getMarcas,
+    getModelosId
+} from "../../services/equipoService";
 
 const { TextArea } = Input;
+const { Title, Text } = Typography;
 
 const ModalAgregar = ({
     open,
@@ -51,31 +65,13 @@ const ModalAgregar = ({
     };
 
     useEffect(() => {
-        // const fetchData = async () => {
-        //     const data = await getModelos();
-        //     setModelos(data);
-        // };
-        const fetchData2 = async () => {
-            const data = await getEstados();
-            setEstados(data);
+        const fetchData = async () => {
+            setEstados(await getEstados());
+            setContratos(await getContratos());
+            setTipoEquipos(await getTipoEquipo());
+            setMarcas(await getMarcas());
         };
-        const fetchData3 = async () => {
-            const data = await getContratos();
-            setContratos(data);
-        };
-        const fetchData4 = async () => {
-            const data = await getTipoEquipo();
-            setTipoEquipos(data);
-        };
-        const fetchData5 = async () => {
-            const data = await getMarcas();
-            setMarcas(data);
-        };
-        // fetchData();
-        fetchData2();
-        fetchData3();
-        fetchData4();
-        fetchData5();
+        fetchData();
     }, []);
 
     const handleMarcaChange = async (marcaId) => {
@@ -99,144 +95,193 @@ const ModalAgregar = ({
             onOk={handleSubmit(onSubmit)}
             confirmLoading={confirmLoading}
             onCancel={handleCancel}
-            okText="Agregar"
+            okText="Guardar equipo"
             cancelText="Cancelar"
             okButtonProps={{
-                className: "equipo-boton",
+                type: "primary",
+                size: "middle"
             }}
-            cancelButtonProps={{
-                className: "equipo-boton-eliminar",
-            }}
+            width={650}
+            centered
         >
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <Title level={4} style={{ marginBottom: 0 }}>
+                Nuevo equipo
+            </Title>
 
-                <Controller
-                    name="serie"
-                    control={control}
-                    rules={{ required: "La serie es obligatoria" }}
-                    render={({ field }) => (
-                        <>
-                            <Input {...field} placeholder="Serie" />
-                            {errors.serie && (
-                                <span style={{ color: "red", fontSize: 12 }}>
-                                    {errors.serie.message}
-                                </span>
-                            )}
-                        </>
-                    )}
-                />
+            <Text type="secondary">
+                Completa la información para registrar el equipo
+            </Text>
 
-                <Controller
-                    name="nombre"
-                    control={control}
-                    rules={{ required: "El nombre es obligatorio" }}
-                    render={({ field }) => (
-                        <>
-                            <Input rules={{ required: "El nombre es obligatorio" }} {...field} placeholder="Nombre" />
-                            {errors.nombre && (
-                                <span style={{ color: "red", fontSize: 12 }}>
-                                    {errors.nombre.message}
-                                </span>
-                            )}
-                        </>
-                    )}
-                />
+            <Divider />
 
-                <Controller
-                    name="observacion"
-                    control={control}
-                    render={({ field }) => (
-                        <TextArea {...field} placeholder="Observación" rows={3} style={{ resize: "none" }} />
-                    )}
-                />
+            <Row gutter={[4, 16]}>
 
-                <Controller
-                    name="id_marca"
-                    control={control}
-                    render={({ field }) => (
-                        <Select
-                            {...field}
-                            rules={{ required: "La marca es obligatoria" }}
-                            placeholder="Seleccionar marca"
-                            onChange={(value) => {
-                                field.onChange(value);
-                                handleMarcaChange(value)
-                            }}
-                            options={marcas.map((marca) => ({
-                                value: marca.id_marca,
-                                label: marca.descripcion,
-                            }))}
-                        />
-                    )}
-                />
+                <Col span={12}>
+                    <Controller
+                        name="serie"
+                        control={control}
+                        rules={{ required: "La serie es obligatoria" }}
+                        render={({ field }) => (
+                            <>
+                                <Input
+                                    {...field}
+                                    placeholder="Serie"
+                                    status={errors.serie ? "error" : ""}
+                                />
+                                {errors.serie && (
+                                    <Text type="danger" style={{ fontSize: 12 }}>
+                                        {errors.serie.message}
+                                    </Text>
+                                )}
+                            </>
+                        )}
+                    />
+                </Col>
 
-                <Controller
-                    name="id_modelo"
-                    control={control}
-                    render={({ field }) => (
-                        <Select
-                            {...field}
-                            rules={{ required: "El modelo es obligatorio" }}
-                            loading={loadingModelos}
-                            disabled={!modelos.length}
-                            placeholder="Seleccionar modelo"
-                            options={modelos.map((modelo) => ({
-                                value: modelo.id_modelo,
-                                label: modelo.descripcion,
-                            }))}
-                        />
-                    )}
-                />
+                <Col span={12}>
+                    <Controller
+                        name="nombre"
+                        control={control}
+                        rules={{ required: "El nombre es obligatorio" }}
+                        render={({ field }) => (
+                            <>
+                                <Input
+                                    {...field}
+                                    placeholder="Nombre del equipo"
+                                    status={errors.nombre ? "error" : ""}
+                                />
+                                {errors.nombre && (
+                                    <Text type="danger" style={{ fontSize: 12 }}>
+                                        {errors.nombre.message}
+                                    </Text>
+                                )}
+                            </>
+                        )}
+                    />
+                </Col>
 
-                <Controller
-                    name="id_tipomodelo"
-                    control={control}
-                    render={({ field }) => (
-                        <Select
-                            {...field}
-                            rules={{ required: "El tipo de equipo es obligatorio" }}
-                            placeholder="Seleccionar tipo de equipo"
-                            options={tipoEquipos.map((tipoEquipo) => ({
-                                value: tipoEquipo.id_tipomodelo,
-                                label: tipoEquipo.descripcion,
-                            }))}
-                        />
-                    )}
-                />
+                <Col span={24}>
+                    <Controller
+                        name="observacion"
+                        control={control}
+                        render={({ field }) => (
+                            <TextArea
+                                {...field}
+                                placeholder="Observación (opcional)"
+                                rows={3}
+                                style={{ resize: "none" }}
+                            />
+                        )}
+                    />
+                </Col>
 
-                <Controller
-                    name="id_estado"
-                    control={control}
-                    render={({ field }) => (
-                        <Select
-                            {...field}
-                            rules={{ required: "El estado es obligatorio" }}
-                            placeholder="Seleccionar estado"
-                            options={estados.map((estado) => ({
-                                value: estado.id_estado,
-                                label: estado.descripcion,
-                            }))}
-                        />
-                    )}
-                />
+                <Col span={8}>
+                    <Controller
+                        name="id_marca"
+                        control={control}
+                        rules={{ required: "La marca es obligatoria" }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                style={{ width: "100%" }}
+                                placeholder="Seleccionar marca"
+                                status={errors.id_marca ? "error" : ""}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                    handleMarcaChange(value);
+                                }}
+                                options={marcas.map((marca) => ({
+                                    value: marca.id_marca,
+                                    label: marca.descripcion,
+                                }))}
+                            />
+                        )}
+                    />
+                </Col>
 
-                <Controller
-                    name="id_contrato"
-                    control={control}
-                    render={({ field }) => (
-                        <Select
-                            {...field}
-                            rules={{ required: "El contrato es obligatorio" }}
-                            placeholder="Seleccionar contrato"
-                            options={contratos.map((contrato) => ({
-                                value: contrato.id_contrato,
-                                label: contrato.nomcontrato,
-                            }))}
-                        />
-                    )}
-                />
+                <Col span={8} >
+                    <Controller
+                        name="id_modelo"
+                        control={control}
+                        rules={{ required: "El modelo es obligatorio" }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                style={{ width: "100%" }}
+                                loading={loadingModelos}
+                                disabled={!modelos.length}
+                                placeholder="Seleccionar modelo"
+                                status={errors.id_modelo ? "error" : ""}
+                                options={modelos.map((modelo) => ({
+                                    value: modelo.id_modelo,
+                                    label: modelo.descripcion,
+                                }))}
+                            />
+                        )}
+                    />
+                </Col>
 
-            </div>
+                <Col span={8}>
+                    <Controller
+                        name="id_tipoequipo"
+                        control={control}
+                        rules={{ required: "El tipo es obligatorio" }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                style={{ width: "100%" }}
+                                placeholder="Tipo de equipo"
+                                status={errors.id_tipoequipo ? "error" : ""}
+                                options={tipoEquipos.map((tipo) => ({
+                                    value: tipo.id_tipomodelo,
+                                    label: tipo.descripcion,
+                                }))}
+                            />
+                        )}
+                    />
+                </Col>
+
+                <Col span={12}>
+                    <Controller
+                        name="id_estado"
+                        control={control}
+                        rules={{ required: "El estado es obligatorio" }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                style={{ width: "100%" }}
+                                placeholder="Estado"
+                                status={errors.id_estado ? "error" : ""}
+                                options={estados.map((estado) => ({
+                                    value: estado.id_estado,
+                                    label: estado.descripcion,
+                                }))}
+                            />
+                        )}
+                    />
+                </Col>
+
+                <Col span={12}>
+                    <Controller
+                        name="id_contrato"
+                        control={control}
+                        rules={{ required: "El contrato es obligatorio" }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                style={{ width: "100%" }}
+                                placeholder="Contrato"
+                                status={errors.id_contrato ? "error" : ""}
+                                options={contratos.map((contrato) => ({
+                                    value: contrato.id_contrato,
+                                    label: contrato.nomcontrato,
+                                }))}
+                            />
+                        )}
+                    />
+                </Col>
+
+            </Row>
         </Modal>
     );
 };

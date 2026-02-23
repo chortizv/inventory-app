@@ -1,5 +1,16 @@
-import { Modal, Spin } from "antd";
-import "./Equipo.css";
+import {
+    Modal,
+    Spin,
+    Typography,
+    Descriptions,
+    Alert,
+    Tag,
+    Divider
+} from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
+
+const { Text, Title } = Typography;
 
 const ModalEliminar = ({
     open,
@@ -10,40 +21,74 @@ const ModalEliminar = ({
     loadingDetalle
 }) => {
 
-    const onSubmit = (equipoDetalle) => {
-        console.log(equipoDetalle);
+    const onSubmit = () => {
         handleOk?.(equipoDetalle);
     };
 
     return (
         <Modal
-            title="Eliminar equipo"
             open={open}
             onOk={onSubmit}
             confirmLoading={confirmLoading}
             onCancel={handleCancel}
-            okText="Eliminar"
+            okText="Sí, eliminar"
             cancelText="Cancelar"
             okButtonProps={{
-                className: "equipo-boton",
+                danger: true,
+                size: "middle"
             }}
-            cancelButtonProps={{
-                className: "equipo-boton-eliminar",
-            }}
+            width={500}
+            centered
         >
             {loadingDetalle ? (
-                <Spin />
+                <div style={{ textAlign: "center", padding: "30px 0" }}>
+                    <Spin size="large" />
+                </div>
             ) : equipoDetalle ? (
                 <>
-                    <p><strong>Serie:</strong> {equipoDetalle.serie}</p>
-                    <p><strong>Nombre:</strong> {equipoDetalle.nombre}</p>
-                    <p><strong>Modelo:</strong> {equipoDetalle.id_modelo}</p>
-                    <p style={{ color: "red" }}>
-                        ¿Estás seguro que deseas eliminar este equipo?
-                    </p>
+                    {/* Título personalizado */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <ExclamationCircleOutlined style={{ color: "#ff4d4f", fontSize: 22 }} />
+                        <Title level={4} style={{ margin: 0 }}>
+                            Confirmar eliminación
+                        </Title>
+                    </div>
+
+                    <Divider />
+
+                    {/* Información del equipo */}
+                    <Descriptions column={1} size="small" bordered>
+                        <Descriptions.Item label="Serie">
+                            <Text strong>{equipoDetalle.serie}</Text>
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="Nombre">
+                            {equipoDetalle.nombre}
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="Modelo">
+                            <Tag color="blue">
+                                {equipoDetalle.id_modelo}
+                            </Tag>
+                        </Descriptions.Item>
+                    </Descriptions>
+
+                    <Divider />
+
+                    <Alert
+                        message="Esta acción no se puede deshacer"
+                        description="Si eliminas este equipo, la información asociada podría perderse permanentemente."
+                        type="error"
+                        showIcon
+                    />
                 </>
             ) : (
-                <p>No se encontró información</p>
+                <Alert
+                    title="Error"
+                    description="No se pudo obtener la información del equipo"
+                    type="error"
+                    showIcon
+                />
             )}
         </Modal>
     );

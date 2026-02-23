@@ -1,19 +1,27 @@
 import { useEffect, useState } from 'react';
-import { Breadcrumb, Table, theme, Input, Button, Tag } from 'antd';
+import { Breadcrumb, Table, theme, Input, Button, Tag, Space } from 'antd';
 import { getFuncionarios, getHistorialFuncionario } from '../../services/funcionarioService';
 import {
+    DeleteOutlined,
     PlusOutlined,
     UnorderedListOutlined
 } from '@ant-design/icons';
 import "./Funcionario.css";
 import ModalHistorial from './ModalHistorial';
+import ModalAgregar from './ModalAgregar';
+import ModalEliminar from './ModalEliminar';
 
 const Funcionario = () => {
     const [funcionarios, setFuncionarios] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [openHistorial, setOpenHistorial] = useState(false);
+    const [openAgregar, setOpenAgregar] = useState(false);
+    const [openEliminar, setOpenEliminar] = useState(false);
     const [historial, setHistorial] = useState([]);
     const [confirmLoadingHistorial, setConfirmLoadingHistorial] = useState(false);
+    const [confirmLoadingAgregar, setConfirmLoadingAgregar] = useState(false);
+    const [confirmLoadingEliminar, setConfirmLoadingEliminar] = useState(false);
+    const [funcionarioSeleccionado, setFuncionarioSeleccionado] = useState(null);
     const [mensajeError, setMensajeError] = useState('');
 
     const {
@@ -44,13 +52,36 @@ const Funcionario = () => {
         }
     };
 
-
     const handleOkHistorial = () => {
         setOpenHistorial(false);
     };
 
     const handleCancelHistorial = () => {
         setOpenHistorial(false);
+    };
+
+    const handleAgregar = () => {
+        setOpenAgregar(true);
+    };
+
+    const handleOkAgregar = () => {
+        setOpenAgregar(false);
+    };
+
+    const handleCancelAgregar = () => {
+        setOpenAgregar(false);
+    };
+
+    const handleEliminar = () => {
+        setOpenEliminar(true);
+    };
+
+    const handleOkEliminar = () => {
+        setOpenEliminar(false);
+    };
+
+    const handleCancelEliminar = () => {
+        setOpenEliminar(false);
     };
 
     const columns = [
@@ -95,17 +126,28 @@ const Funcionario = () => {
             key: "cargo",
         },
         {
-            title: 'Asignaciones',
+            title: 'Acciones',
             key: 'action',
             render: (_, record) => (
-                <Tag
-                    color="blue"
-                    variant='outlined'
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleHistorial(record.id_funcionario)}
-                >
-                    <UnorderedListOutlined /> Asignaciones
-                </Tag>
+                <Space>
+
+                    <Tag
+                        color="blue"
+                        variant='outlined'
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleHistorial(record.id_funcionario)}
+                    >
+                        <UnorderedListOutlined />
+                    </Tag>
+                    <Tag
+                        color="red"
+                        variant='outlined'
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleEliminar(record.id_funcionario)}
+                    >
+                        <DeleteOutlined />
+                    </Tag>
+                </Space>
             ),
         },
     ];
@@ -153,6 +195,7 @@ const Funcionario = () => {
                     type="btn"
                     onClick={() => {
                         console.log('Agregar funcionario');
+                        handleAgregar();
                     }}
                     style={{ marginBottom: 16 }}
                 >
@@ -171,6 +214,18 @@ const Funcionario = () => {
                     handleCancel={handleCancelHistorial}
                     historial={historial}
                     mensajeError={mensajeError}
+                />
+                <ModalAgregar
+                    open={openAgregar}
+                    handleOk={handleOkAgregar}
+                    confirmLoading={confirmLoadingAgregar}
+                    handleCancel={handleCancelAgregar}
+                />
+                <ModalEliminar
+                    open={openEliminar}
+                    handleOk={handleOkEliminar}
+                    confirmLoading={confirmLoadingEliminar}
+                    handleCancel={handleCancelEliminar}
                 />
             </div>
         </>
