@@ -47,7 +47,6 @@ const ModalAgregar = ({
     }, [open, reset]);
 
     const onSubmit = (data) => {
-        console.log(data);
         handleOk?.(data);
     };
 
@@ -86,8 +85,6 @@ const ModalAgregar = ({
             try {
                 const data = await getModelosId(marcaId);
                 setModelos(data);
-            } catch (error) {
-                console.error("Error cargando modelos", error);
             } finally {
                 setLoadingModelos(false);
             }
@@ -98,7 +95,6 @@ const ModalAgregar = ({
 
     return (
         <Modal
-            title="Agregar equipo"
             open={open}
             onOk={handleSubmit(onSubmit)}
             confirmLoading={confirmLoading}
