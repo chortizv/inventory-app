@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Breadcrumb, Table, theme, Input, Button, Tag, Space } from 'antd';
-import { eliminarFuncionario, getFuncionarioById, getFuncionarios, getHistorialFuncionario } from '../../services/funcionarioService';
+import { Breadcrumb, Table, theme, Input, Button, Tag, Space, message } from 'antd';
+import { agregarFuncionario, eliminarFuncionario, getFuncionarioById, getFuncionarios, getHistorialFuncionario } from '../../services/funcionarioService';
 import {
     DeleteOutlined,
     PlusOutlined,
@@ -73,8 +73,30 @@ const Funcionario = () => {
         setOpenAgregar(true);
     };
 
-    const handleOkAgregar = () => {
+    const handleOkAgregar = async (data) => {
         setOpenAgregar(false);
+        console.log(data);
+        try {
+            const response = await agregarFuncionario(data);
+            console.log(response);
+            if (response.status === 200) {
+                fetchFuncionarios();
+                message.success("Funcionario agregado correctamente");
+                setOpenAgregar(false);
+                setConfirmLoadingAgregar(false);
+                setFuncionarioSeleccionado(null);
+            } else {
+                message.error("Error al agregar funcionario");
+                setOpenAgregar(false);
+                setConfirmLoadingAgregar(false);
+                setFuncionarioSeleccionado(null);
+            }
+        } catch (error) {
+            message.error("Error al conectar con el servidor");
+            setOpenAgregar(false);
+            setConfirmLoadingAgregar(false);
+            setFuncionarioSeleccionado(null);
+        }
     };
 
     const handleCancelAgregar = () => {
