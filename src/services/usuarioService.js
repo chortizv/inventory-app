@@ -19,3 +19,24 @@ export const login = async (data) => {
         throw error;
     }
 };
+
+
+export const agregarUsuario = async (data) => {
+    try {
+        const response = await axiosInstance.post("/User/crearUsuario", data);
+        return response.data;
+    } catch (error) {
+        console.error("Error al agregar usuario:", error);
+        throw error;
+    }
+};
+
+// export const eliminarUsuario = async (id) => {
+//     try {
+//         const response = await axiosInstance.delete(`/User/usuario/${id}`);
+//         return response.data;
+//     } catch (error) {
+//         console.error("Error al eliminar usuario:", error);
+//         throw error;
+//     }
+// };

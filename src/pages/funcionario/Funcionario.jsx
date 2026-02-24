@@ -5,8 +5,7 @@ import {
     DeleteOutlined,
     EyeOutlined,
     HistoryOutlined,
-    PlusOutlined,
-    UnorderedListOutlined
+    PlusOutlined
 } from '@ant-design/icons';
 import "./Funcionario.css";
 import ModalHistorial from './ModalHistorial';
