@@ -5,6 +5,7 @@ import "./Equipo.css";
 import ModalAgregar from './ModalAgregar';
 import ModalEliminar from './ModalEliminar';
 import {
+    CommentOutlined,
     DeleteOutlined,
     EyeOutlined,
     PlusOutlined
@@ -205,12 +206,13 @@ const Equipo = () => {
                             title={record.observacion}
                             placement="top"
                         >
-                            <Button
-                                color='primary'
+                            <Tag
+                                color='blue'
                                 size="small"
                                 variant='outlined'
-                                icon={<EyeOutlined />}
-                            />
+                            >
+                                <CommentOutlined />
+                            </Tag>
                         </Tooltip>
                     )}
                 </Space>
@@ -249,23 +251,24 @@ const Equipo = () => {
                     borderRadius: borderRadiusLG,
                 }}
             >
+                <div style={{ display: "flex", gap: 16 }}>
 
-                <Input.Search
-                    placeholder="Buscar por serie, nombre u observación"
-                    allowClear
-                    onChange={(e) => setSearchText(e.target.value)}
-                    style={{ marginBottom: 16 }}
-                />
+                    <Button
+                        className='equipo-boton'
+                        type="btn"
+                        onClick={showModalAgregar}
+                        style={{ marginBottom: 16 }}
+                    >
+                        <PlusOutlined /> Agregar equipo
+                    </Button>
+                    <Input.Search
+                        placeholder="Buscar por serie, nombre u observación"
+                        allowClear
+                        onChange={(e) => setSearchText(e.target.value)}
+                        style={{ height: "100%" }}
+                    />
 
-                {/* BOTÓN CORREGIDO */}
-                <Button
-                    className='equipo-boton'
-                    type="btn"
-                    onClick={showModalAgregar}
-                    style={{ marginBottom: 16 }}
-                >
-                    <PlusOutlined /> Agregar equipo
-                </Button>
+                </div>
 
                 <Table
                     columns={columns}
@@ -276,6 +279,7 @@ const Equipo = () => {
                             `${range[0]}-${range[1]} de ${total}`,
                         size: "small",
                     }}
+                    style={{ height: "calc(100vh - 250px)" }}
                 />
 
                 {/* MODAL ELIMINAR */}

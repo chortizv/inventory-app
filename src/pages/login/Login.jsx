@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/logo.webp";
 import { useEffect, useState } from 'react';
+import {
+    RightOutlined
+} from '@ant-design/icons';
 
 const Login = ({ setIsAuthenticated }) => {
     const [loginError, setLoginError] = useState("");
@@ -68,7 +71,7 @@ const Login = ({ setIsAuthenticated }) => {
                         {loginError}
                     </p>
                 )}
-                <button className='login-boton'>Iniciar Sesión →</button>
+                <button className='login-boton'>Iniciar Sesión <RightOutlined /></button>
             </form>
             <h6>Credenciales de acceso restringido</h6>
         </div>

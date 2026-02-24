@@ -56,9 +56,6 @@ const ModalEliminar = ({
 
                     <Divider />
                     <Descriptions column={1} size="small" bordered>
-                        <Descriptions.Item label="ID">
-                            <Text strong>{funcionarioSeleccionado[0].id_funcionario}</Text>
-                        </Descriptions.Item>
 
                         <Descriptions.Item label="Nombre">
                             {funcionarioSeleccionado[0].pnombre}

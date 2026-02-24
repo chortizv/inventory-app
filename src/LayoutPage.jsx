@@ -4,7 +4,8 @@ import {
     TeamOutlined,
     UserOutlined,
     SettingOutlined,
-    ForkOutlined
+    ForkOutlined,
+    LeftOutlined
 } from '@ant-design/icons';
 import { getItem } from './components/GetItem'
 import { Layout, Menu, theme } from 'antd';
@@ -67,7 +68,7 @@ const LayoutPage = () => {
             <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
                 <div className="demo-logo-vertical" />
                 {/* defaultSelectedKeys={['1']} */}
-                <button className='layout-boton' onClick={logout}>← Cerrar sesión</button>
+                <button className='layout-boton' onClick={logout}><LeftOutlined /> Cerrar sesión</button>
                 <img className='layout-logo' src={logo} alt="logo" />
                 <Menu theme="dark" selectedKeys={[currentPage]} mode="inline" items={items} onClick={handleMenuClick} />
             </Sider>
