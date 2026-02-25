@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Button, Input, Space, Table, Tag, theme } from 'antd';
-import { getUsuarios } from '../../services/usuarioService';
+import { Breadcrumb, Button, Input, message, Space, Table, Tag, theme } from 'antd';
+import { agregarUsuario, getUsuarios } from '../../services/usuarioService';
 import {
     DeleteOutlined,
     EyeOutlined,
@@ -83,25 +83,39 @@ const Usuario = () => {
         setOpenAgregar(true);
     };
 
-    const handleOkAgregar = () => {
+    const handleOkAgregar = async (data) => {
         setConfirmLoadingAgregar(true);
-        setTimeout(() => {
+        try {
+            const response = await agregarUsuario(data);
+            if (response.status === 200) {
+                fetchUsuarios();
+                message.success("Usuario agregado correctamente");
+                setOpenAgregar(false);
+                setConfirmLoadingAgregar(false);
+            } else {
+                message.error("Error al agregar usuario");
+                setOpenAgregar(false);
+                setConfirmLoadingAgregar(false);
+            }
+        } catch (error) {
+            console.error("Error al conectar con el servidor:", error);
+            message.error("Error al conectar con el servidor");
             setOpenAgregar(false);
             setConfirmLoadingAgregar(false);
-        }, 2000);
+        }
     };
 
     const handleCancelAgregar = () => {
         setOpenAgregar(false);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getUsuarios();
-            setUsuarios(data);
-        };
+    const fetchUsuarios = async () => {
+        const data = await getUsuarios();
+        setUsuarios(data);
+    };
 
-        fetchData();
+    useEffect(() => {
+        fetchUsuarios();
     }, []);
 
 

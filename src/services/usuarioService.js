@@ -23,8 +23,14 @@ export const login = async (data) => {
 
 export const agregarUsuario = async (data) => {
     try {
-        const response = await axiosInstance.post("/User/crearUsuario", data);
-        return response.data;
+        const payload = {
+            username: data.username,
+            correo: data.correo,
+            password: data.password,
+            id_funcionario: data.funcionario,
+        };
+        const response = await axiosInstance.post("/User/crearUsuario", payload);
+        return response;
     } catch (error) {
         console.error("Error al agregar usuario:", error);
         throw error;
