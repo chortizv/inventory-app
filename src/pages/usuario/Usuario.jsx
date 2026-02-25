@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Button, Input, message, Space, Table, Tag, theme } from 'antd';
-import { agregarUsuario, getUsuarios } from '../../services/usuarioService';
+import { agregarUsuario, eliminarUsuario, getUsuarioById, getUsuarios } from '../../services/usuarioService';
 import {
     DeleteOutlined,
     EyeOutlined,
@@ -8,10 +8,16 @@ import {
     PlusOutlined
 } from '@ant-design/icons';
 import ModalAgregar from './ModalAgregar';
+import ModalEliminar from './ModalEliminar';
 
 const Usuario = () => {
     const [usuarios, setUsuarios] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [openAgregar, setOpenAgregar] = useState(false);
+    const [openEliminar, setOpenEliminar] = useState(false);
+    const [confirmLoadingAgregar, setConfirmLoadingAgregar] = useState(false);
+    const [confirmLoadingEliminar, setConfirmLoadingEliminar] = useState(false);
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -51,7 +57,7 @@ const Usuario = () => {
                     <Tag
                         color="red"
                         variant='outlined'
-                        onClick={() => handleEliminar(record.id_funcionario)}>
+                        onClick={() => handleEliminar(record.id_usuario)}>
                         <DeleteOutlined />
                     </Tag>
                 </>
@@ -72,15 +78,11 @@ const Usuario = () => {
         setOpenAgregar(true);
     };
 
-    const handleEliminar = (id) => {
-        console.log('Eliminar usuario', id);
-    };
+    const handleEliminar = async (id) => {
 
-    const [openAgregar, setOpenAgregar] = useState(false);
-    const [confirmLoadingAgregar, setConfirmLoadingAgregar] = useState(false);
-
-    const showModalAgregar = () => {
-        setOpenAgregar(true);
+        const data = await getUsuarioById(id);
+        setUsuarioSeleccionado(data);
+        setOpenEliminar(true);
     };
 
     const handleOkAgregar = async (data) => {
@@ -107,6 +109,32 @@ const Usuario = () => {
 
     const handleCancelAgregar = () => {
         setOpenAgregar(false);
+    };
+
+    const handleOkEliminar = async (id) => {
+        setConfirmLoadingEliminar(true);
+        try {
+            const response = await eliminarUsuario(id);
+            if (response.status === 200) {
+                fetchUsuarios();
+                message.success("Usuario eliminado correctamente");
+                setOpenEliminar(false);
+                setConfirmLoadingEliminar(false);
+            } else {
+                message.error("Error al eliminar usuario");
+                setOpenEliminar(false);
+                setConfirmLoadingEliminar(false);
+            }
+        } catch (error) {
+            console.error("Error al conectar con el servidor:", error);
+            message.error("Error al conectar con el servidor");
+            setOpenEliminar(false);
+            setConfirmLoadingEliminar(false);
+        }
+    };
+
+    const handleCancelEliminar = () => {
+        setOpenEliminar(false);
     };
 
     const fetchUsuarios = async () => {
@@ -161,6 +189,13 @@ const Usuario = () => {
                     handleOk={handleOkAgregar}
                     confirmLoading={confirmLoadingAgregar}
                     handleCancel={handleCancelAgregar}
+                />
+                <ModalEliminar
+                    open={openEliminar}
+                    handleOk={handleOkEliminar}
+                    confirmLoading={confirmLoadingEliminar}
+                    handleCancel={handleCancelEliminar}
+                    usuarioSeleccionado={usuarioSeleccionado}
                 />
             </div>
         </>

@@ -10,6 +10,16 @@ export const getUsuarios = async () => {
     }
 };
 
+export const getUsuarioById = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/User/usuario/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener usuario:", error);
+        throw error;
+    }
+};
+
 export const login = async (data) => {
     try {
         const response = await axiosInstance.post("/User/usuario/login", data);
@@ -37,12 +47,12 @@ export const agregarUsuario = async (data) => {
     }
 };
 
-// export const eliminarUsuario = async (id) => {
-//     try {
-//         const response = await axiosInstance.delete(`/User/usuario/${id}`);
-//         return response.data;
-//     } catch (error) {
-//         console.error("Error al eliminar usuario:", error);
-//         throw error;
-//     }
-// };
+export const eliminarUsuario = async (id) => {
+    try {
+        const response = await axiosInstance.delete(`/User/eliminarUsuario/${id}`);
+        return response;
+    } catch (error) {
+        console.error("Error al eliminar usuario:", error);
+        throw error;
+    }
+};
