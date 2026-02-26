@@ -5,9 +5,9 @@ import "./Equipo.css";
 import ModalAgregar from './ModalAgregar';
 import ModalEliminar from './ModalEliminar';
 import {
-    CommentOutlined,
     DeleteOutlined,
     EyeOutlined,
+    MessageOutlined,
     PlusOutlined
 } from '@ant-design/icons';
 
@@ -211,7 +211,7 @@ const Equipo = () => {
                                 size="small"
                                 variant='outlined'
                             >
-                                <CommentOutlined />
+                                <MessageOutlined />
                             </Tag>
                         </Tooltip>
                     )}
