@@ -14,7 +14,7 @@ import Funcionario from './pages/funcionario/Funcionario';
 import Usuario from './pages/usuario/Usuario';
 import { useNavigate } from "react-router-dom";
 import './LayoutPage.css';
-import logo from "../public/logo.webp";
+import logo from "../public/logo2.webp";
 import Asignacion from './pages/asignacion/Asignacion';
 
 const { Header, Content, Footer, Sider } = Layout;

@@ -23,6 +23,10 @@
     color: #98abf06c;
 }
 
+.container-login img {
+    width: 14rem;
+}
+
 .login-card {
     display: flex;
     flex-direction: column;

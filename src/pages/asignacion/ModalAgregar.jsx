@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { getFuncionarios } from "../../services/funcionarioService";
-import { getEquipos } from "../../services/equipoService";
+import { getEquiposSA } from "../../services/equipoService";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -69,7 +69,7 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
     const fetchEquipos = async () => {
         setLoadingEquipos(true);
         try {
-            const response = await getEquipos();
+            const response = await getEquiposSA();
             setEquipos(response);
         } catch (error) {
             console.error("Error al obtener equipos:", error);

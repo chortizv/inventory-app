@@ -10,6 +10,16 @@ export const getEquipos = async () => {
     }
 };
 
+export const getEquiposSA = async () => {
+    try {
+        const response = await axiosInstance.get("/Equipo/equipos-sinasignar");
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener equipos sin asignar:", error);
+        throw error;
+    }
+}
+
 export const getEquiposDescripcion = async () => {
     try {
         const response = await axiosInstance.get("/Equipo/equipos-descripcion");
