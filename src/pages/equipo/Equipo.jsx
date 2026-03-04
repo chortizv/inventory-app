@@ -95,7 +95,7 @@ const Equipo = () => {
     const handleOkEliminar = async (equipoDetalle) => {
         try {
             setConfirmLoadingEliminar(true);
-            const response = await eliminarEquipo(equipoDetalle.serie);
+            const response = await eliminarEquipo(equipoDetalle[0].serie);
             console.log(response);
 
             if (response.status === 200) {

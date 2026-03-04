@@ -186,6 +186,10 @@ const ModalAgregar = ({
                                 <Input
                                     {...field}
                                     placeholder="Primer nombre"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^a-zA-Z]/g, "");
+                                        field.onChange(value);
+                                    }}
                                     status={errors.pnombre ? "error" : ""}
                                 />
                                 {errors.pnombre && (
@@ -207,6 +211,10 @@ const ModalAgregar = ({
                                 <Input
                                     {...field}
                                     placeholder="Segundo nombre (opcional)"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^a-zA-Z]/g, "");
+                                        field.onChange(value);
+                                    }}
                                     status={errors.snombre ? "error" : ""}
                                 />
                                 {errors.snombre && (
@@ -228,6 +236,10 @@ const ModalAgregar = ({
                                 <Input
                                     {...field}
                                     placeholder="Apellido paterno"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^a-zA-Z]/g, "");
+                                        field.onChange(value);
+                                    }}
                                     status={errors.appaterno ? "error" : ""}
                                 />
                                 {errors.appaterno && (
@@ -249,6 +261,10 @@ const ModalAgregar = ({
                                 <Input
                                     {...field}
                                     placeholder="Apellido materno"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^a-zA-Z]/g, "");
+                                        field.onChange(value);
+                                    }}
                                     status={errors.apmaterno ? "error" : ""}
                                 />
                                 {errors.apmaterno && (
@@ -264,12 +280,19 @@ const ModalAgregar = ({
                     <Controller
                         name="correo"
                         control={control}
-                        rules={{ required: "El correo es obligatorio" }}
+                        rules={{
+                            required: "El correo es obligatorio",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Ingrese un correo válido"
+                            }
+                        }}
                         render={({ field }) => (
                             <>
                                 <Input
                                     {...field}
                                     placeholder="Correo"
+                                    onBlur={(e) => field.onChange(e.target.value.trim())}
                                     type="email"
                                     status={errors.correo ? "error" : ""}
                                 />
@@ -315,6 +338,10 @@ const ModalAgregar = ({
                                 <Input
                                     {...field}
                                     placeholder="Anexo"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^0-9]/g, "");
+                                        field.onChange(value);
+                                    }}
                                     status={errors.anexo ? "error" : ""}
                                 />
                                 {errors.anexo && (
@@ -336,6 +363,10 @@ const ModalAgregar = ({
                                 <Input
                                     {...field}
                                     placeholder="Cargo"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, "");
+                                        field.onChange(value);
+                                    }}
                                     status={errors.cargo ? "error" : ""}
                                 />
                                 {errors.cargo && (

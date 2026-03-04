@@ -6,11 +6,12 @@ import { Controller, useForm } from "react-hook-form";
 const { Title, Text } = Typography;
 
 const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
-    const { control, handleSubmit, formState: { errors }, reset } = useForm({
+    const { control, handleSubmit, formState: { errors }, reset, watch } = useForm({
         defaultValues: {
             username: "",
             correo: "",
             password: "",
+            confirmPassword: "",
             funcionario: null,
         },
     });
@@ -76,6 +77,10 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
                                 <Input
                                     {...field}
                                     placeholder="Nombre de usuario"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^a-zA-Z0-9.]/g, "");
+                                        field.onChange(value);
+                                    }}
                                     status={errors.username ? "error" : ""}
                                 />
                                 {errors.username && (
@@ -117,12 +122,19 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
                     <Controller
                         name="correo"
                         control={control}
-                        rules={{ required: "El correo es obligatorio" }}
+                        rules={{
+                            required: "El correo es obligatorio",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Ingrese un correo válido"
+                            }
+                        }}
                         render={({ field }) => (
                             <>
                                 <Input
                                     {...field}
                                     placeholder="Correo"
+                                    onBlur={(e) => field.onChange(e.target.value.trim())}
                                     type="email"
                                     status={errors.correo ? "error" : ""}
                                 />
@@ -151,6 +163,36 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
                                 {errors.password && (
                                     <Text type="danger" style={{ fontSize: 12 }}>
                                         {errors.password.message}
+                                    </Text>
+                                )}
+                            </>
+                        )}
+                    />
+                </Col>
+                <Col span={24}>
+                    <Controller
+                        name="confirmPassword"
+                        control={control}
+                        rules={{
+                            required: "La contraseña es obligatoria",
+                            validate: (value) => {
+                                if (value !== watch("password")) {
+                                    return "Las contraseñas no coinciden";
+                                }
+                                return true;
+                            }
+                        }}
+                        render={({ field }) => (
+                            <>
+                                <Input
+                                    {...field}
+                                    placeholder="Confirmar contraseña"
+                                    type="password"
+                                    status={errors.confirmPassword ? "error" : ""}
+                                />
+                                {errors.confirmPassword && (
+                                    <Text type="danger" style={{ fontSize: 12 }}>
+                                        {errors.confirmPassword.message}
                                     </Text>
                                 )}
                             </>

@@ -120,12 +120,18 @@ const ModalAgregar = ({
                     <Controller
                         name="serie"
                         control={control}
-                        rules={{ required: "La serie es obligatoria" }}
+                        rules={{
+                            required: "La serie es obligatoria"
+                        }}
                         render={({ field }) => (
                             <>
                                 <Input
                                     {...field}
                                     placeholder="Serie"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+                                        field.onChange(value);
+                                    }}
                                     status={errors.serie ? "error" : ""}
                                 />
                                 {errors.serie && (
@@ -148,6 +154,12 @@ const ModalAgregar = ({
                                 <Input
                                     {...field}
                                     placeholder="Nombre del equipo"
+                                    onChange={(e) => {
+                                        const value = e.target.value
+                                            .replace(/[^a-zA-Z0-9-]/g, "")
+                                            .toUpperCase();
+                                        field.onChange(value);
+                                    }}
                                     status={errors.nombre ? "error" : ""}
                                 />
                                 {errors.nombre && (
@@ -167,9 +179,20 @@ const ModalAgregar = ({
                         render={({ field }) => (
                             <TextArea
                                 {...field}
-                                placeholder="Observación (opcional)"
+                                maxLength={140} // limita visualmente
+                                showCount       // muestra contador (muy buena UX)
+                                onChange={(e) => {
+                                    const value = e.target.value.trimStart();
+                                    // trimStart evita espacios infinitos al inicio mientras escribe
+                                    field.onChange(value);
+                                }}
+                                onBlur={(e) => {
+                                    // cuando sale del campo, hace trim completo
+                                    field.onChange(e.target.value.trim());
+                                }}
+                                placeholder="Ingrese Observación (máx. 140 caracteres, Opcional)"
                                 rows={3}
-                                style={{ resize: "none" }}
+                                style={{ resize: "none", marginBottom: "5px" }}
                             />
                         )}
                     />

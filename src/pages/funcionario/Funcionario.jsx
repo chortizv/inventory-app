@@ -117,7 +117,7 @@ const Funcionario = () => {
     const handleOkEliminar = async () => {
         try {
             setConfirmLoadingEliminar(true);
-            const response = await eliminarFuncionario(funcionarioSeleccionado[0].id_funcionario);
+            const response = await eliminarFuncionario(funcionarioSeleccionado[0].idFuncionario);
             console.log(response);
 
             if (response.status === 200) {

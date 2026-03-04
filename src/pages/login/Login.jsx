@@ -61,9 +61,9 @@ const Login = ({ setIsAuthenticated }) => {
             <h5>Inicie sesión para acceder al sistema</h5>
             <form className='login-card' onSubmit={handleSubmit(onSubmit)}>
                 <label className='label-login' htmlFor="username">Usuario</label>
-                <input className='input-login' type="text" id='username' placeholder='usuario' {...register("username")} autoComplete="off" />
+                <input className='input-login' type="text" id='username' placeholder='Usuario' {...register("username")} autoComplete="off" />
                 <label className='label-login' htmlFor='password'>Contraseña</label>
-                <input className='input-login' type="password" id='password' placeholder='*******' {...register("password")} autoComplete="off" />
+                <input className='input-login' type="password" id='password' placeholder='Contraseña' {...register("password")} autoComplete="off" />
                 <div className='input-label'>
                 </div>
                 {loginError && (
