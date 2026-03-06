@@ -183,6 +183,7 @@ const Usuario = () => {
                     dataSource={filteredUsuarios}
                     rowKey="id"
                     pagination={{ pageSize: 10 }}
+                    style={{ height: "calc(100vh - 350px)" }}
                 />
                 <ModalAgregar
                     open={openAgregar}

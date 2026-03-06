@@ -279,10 +279,9 @@ const Equipo = () => {
                             `${range[0]}-${range[1]} de ${total}`,
                         size: "small",
                     }}
-                    style={{ height: "calc(100vh - 250px)" }}
+                    style={{ height: "calc(100vh - 350px)" }}
                 />
 
-                {/* MODAL ELIMINAR */}
                 <ModalEliminar
                     open={openEliminar}
                     handleOk={handleOkEliminar}
@@ -292,7 +291,6 @@ const Equipo = () => {
                     loadingDetalle={loadingDetalle}
                 />
 
-                {/* MODAL AGREGAR */}
                 <ModalAgregar
                     open={openAgregar}
                     handleOk={handleOkAgregar}

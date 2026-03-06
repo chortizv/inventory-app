@@ -266,7 +266,7 @@ const Asignacion = () => {
                             `${range[0]}-${range[1]} de ${total}`,
                         size: "small",
                     }}
-                    style={{ height: "calc(100vh - 250px)" }}
+                    style={{ height: "calc(100vh - 350px)" }}
                 />
                 <ModalAgregar
                     open={openAgregar}
