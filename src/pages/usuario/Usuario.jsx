@@ -159,24 +159,28 @@ const Usuario = () => {
                     borderRadius: borderRadiusLG,
                 }}
             >
-                <div style={{ display: "flex", gap: 16 }}>
-                    <Button
-                        className='funcionario-boton'
-                        type="btn"
-                        onClick={() => {
-                            console.log('Agregar usuario');
-                            handleAgregar();
-                        }}
-                        style={{ marginBottom: 16 }}
-                    >
-                        <PlusOutlined /> Agregar usuario
-                    </Button>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: 16,
+                    }}
+                >
                     <Input.Search
-                        placeholder="Buscar por nombre"
-                        allowClear
+                        placeholder="Buscar"
+                        value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
-                        style={{ height: "100%" }}
+                        style={{ width: 300 }}
                     />
+
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => handleAgregar()}
+                    >
+                        Agregar usuario
+                    </Button>
                 </div>
                 <Table
                     columns={columns}

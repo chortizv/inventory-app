@@ -90,6 +90,17 @@ export const getModelosId = async (marcaId) => {
     }
 };
 
+export const getMarcaModelosId = async (modeloId) => {
+    try {
+        const response = await axiosInstance.get(`/Equipo/modelo-idmodelo/${modeloId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener marca por modelo:", error);
+        throw error;
+    }
+};
+
+
 export const getContratos = async () => {
     try {
         const response = await axiosInstance.get("/Equipo/contratos");
@@ -147,6 +158,27 @@ export const eliminarEquipo = async (serie) => {
         return response;
     } catch (error) {
         console.error("Error al eliminar equipo:", error);
+        throw error;
+    }
+};
+
+export const modificarEquipo = async (equipoData) => {
+    try {
+
+        const json = {
+            serie: equipoData.serie,
+            nombre: equipoData.nombre,
+            observacion: equipoData?.observacion || "",
+            id_modelo: equipoData.id_modelo,
+            id_estado: equipoData.id_estado,
+            id_contrato: equipoData.id_contrato,
+            id_tipoequipo: equipoData.id_tipoequipo,
+        }
+
+        const response = await axiosInstance.put("/Equipo/modificarEquipo", json);
+        return response;
+    } catch (error) {
+        console.error("Error al modificar equipo:", error);
         throw error;
     }
 };

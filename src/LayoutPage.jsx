@@ -6,7 +6,8 @@ import {
     SettingOutlined,
     ForkOutlined,
     LeftOutlined,
-    PieChartOutlined
+    PieChartOutlined,
+    SaveOutlined
 } from '@ant-design/icons';
 import { getItem } from './components/GetItem'
 import { Layout, Menu, theme } from 'antd';
@@ -18,6 +19,7 @@ import Asignacion from './pages/asignacion/Asignacion';
 import { useNavigate } from "react-router-dom";
 import './LayoutPage.css';
 import logo from "../public/logo2.webp";
+import Cinta from './pages/cinta/Cinta';
 
 const { Content, Footer, Sider } = Layout;
 
@@ -27,17 +29,19 @@ const items = [
     getItem('Funcionarios', '2', <TeamOutlined />),
     getItem('Usuarios', '3', <UserOutlined />),
     getItem('Asignaciones', '4', <ForkOutlined />),
-    getItem('Administrador', 'sub1', <SettingOutlined />, [
-        getItem('Marca', '5'),
-        getItem('Modelo', '6'),
-        getItem('Tipo Modelo', '7'),
-        getItem('Estado', '8'),
-        getItem('Contrato', '9'),
-        getItem('Departamento', '10'),
-        getItem('Subdepartamento', '11'),
-        getItem('Seccion', '12'),
-        getItem('Prioridad', '13'),
-    ]),
+    //Proximamente!
+    // getItem('Administrador', 'sub1', <SettingOutlined />, [
+    //     getItem('Marca', '5'),
+    //     getItem('Modelo', '6'),
+    //     getItem('Tipo Modelo', '7'),
+    //     getItem('Estado', '8'),
+    //     getItem('Contrato', '9'),
+    //     getItem('Departamento', '10'),
+    //     getItem('Subdepartamento', '11'),
+    //     getItem('Seccion', '12'),
+    //     getItem('Prioridad', '13'),
+    // ]),
+    getItem('Backup Cintas', '14', <SaveOutlined />),
 ];
 
 const LayoutPage = () => {
@@ -55,6 +59,7 @@ const LayoutPage = () => {
         '2': <Funcionario />,
         '3': <Usuario />,
         '4': <Asignacion />,
+        '14': <Cinta />,
     };
 
     const handleMenuClick = (e) => {
