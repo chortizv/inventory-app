@@ -41,7 +41,8 @@ Descripción: ${cinta.descripcion}
 Contenido: ${cinta.contenido}
 Fecha: ${new Date(cinta.fecha_Respaldo).toLocaleString()}
 Ubicación: ${cinta.ubicacion}
-Estado: ${cinta.estado}`;
+Estado: ${cinta.estado}
+Capacidad: ${cinta.capacidad} TB`;
     };
 
     // 📄 Descargar QR como PDF REAL
@@ -115,9 +116,13 @@ Estado: ${cinta.estado}`;
                             </Text>
                         </Col>
 
-                        <Col span={24}>
+                        <Col span={12}>
                             <Text strong>Contenido:</Text><br />
                             <Text>{cinta.contenido}</Text>
+                        </Col>
+                        <Col span={12}>
+                            <Text strong>Capacidad:</Text><br />
+                            <Text>{cinta.capacidad} TB</Text>
                         </Col>
                     </Row>
 

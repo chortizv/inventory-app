@@ -1,3 +1,4 @@
+import React, { useEffect } from "react"; // 1. Importamos useEffect
 import {
     Modal,
     Input,
@@ -13,8 +14,7 @@ import dayjs from "dayjs";
 
 const { Text } = Typography;
 
-const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
-
+const ModalModificar = ({ open, handleOk, confirmLoading, handleCancel, cintaSeleccionada }) => {
     const {
         control,
         handleSubmit,
@@ -27,44 +27,61 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
         { value: 2, label: "En uso" },
         { value: 3, label: "Llena" }
     ];
+
+    // 2. Efecto para cargar los datos cuando el modal se abre o cambia la cinta
+    useEffect(() => {
+        if (open && cintaSeleccionada) {
+            // Buscamos el valor numérico del estado basado en el texto que viene de la API
+            const estadoEncontrado = ESTADOS_CINTA.find(
+                (e) => e.label === cintaSeleccionada.estado
+            );
+
+            reset({
+                ...cintaSeleccionada,
+                // Si la fecha existe, la convertimos a objeto dayjs para el DatePicker
+                fecha_Respaldo: cintaSeleccionada.fecha_Respaldo ? dayjs(cintaSeleccionada.fecha_Respaldo) : null,
+                // Asignamos el ID numérico al Select
+                estado: estadoEncontrado ? estadoEncontrado.value : null
+            });
+        }
+    }, [open, cintaSeleccionada, reset]);
+
     const onSubmit = (data) => {
         const estadoTexto = ESTADOS_CINTA.find(
             (e) => e.value === data.estado
         )?.label;
 
         const payload = {
+            ...cintaSeleccionada, // Mantenemos el ID original y otros campos no editables
             ...data,
-            estado: estadoTexto, // 👈 aquí lo transformas
+            estado: estadoTexto,
             fecha_Respaldo: data.fecha_Respaldo
                 ? dayjs(data.fecha_Respaldo).toISOString()
                 : null
         };
 
         handleOk(payload);
-        reset();
     };
-
 
     return (
         <Modal
             open={open}
             onCancel={() => {
-                reset();
+                reset(); // Limpiar al cerrar
                 handleCancel();
             }}
             confirmLoading={confirmLoading}
             onOk={handleSubmit(onSubmit)}
-            okText="Agregar cinta"
+            okText="Guardar cambios" // 3. Texto ajustado
             cancelText="Cancelar"
             okButtonProps={{
                 type: "primary",
                 size: "middle"
             }}
             width={700}
-            title="Agregar Cinta"
+            title="Modificar Cinta" // 4. Título ajustado
         >
             <Row gutter={[16, 16]}>
-
                 {/* Código */}
                 <Col span={12}>
                     <Text strong>Código</Text>
@@ -91,8 +108,6 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
                                 {...field}
                                 placeholder="Seleccione estado"
                                 options={ESTADOS_CINTA}
-                                onChange={(value) => field.onChange(value)}
-                                value={field.value}
                                 style={{ width: "100%" }}
                             />
                         )}
@@ -122,17 +137,13 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
                         control={control}
                         render={({ field }) => (
                             <DatePicker
+                                {...field} // Simplificado: field ya trae value y onChange
                                 style={{ width: "100%" }}
                                 showTime
                                 format="DD-MM-YYYY HH:mm"
-                                value={field.value ? dayjs(field.value) : null}
-                                onChange={(date) => field.onChange(date)}
                             />
                         )}
                     />
-                    {errors.fecha_Respaldo && (
-                        <Text type="danger">{errors.fecha_Respaldo.message}</Text>
-                    )}
                 </Col>
 
                 {/* Descripción */}
@@ -150,22 +161,25 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
                 </Col>
 
                 <Col span={12}>
-                    <Text strong>Capacidad</Text>
+                    <Text strong>Capacidad (TB)</Text>
                     <Controller
                         name="capacidad"
                         control={control}
                         rules={{ required: "La capacidad es obligatoria" }}
                         render={({ field }) => (
-                            <InputNumber {...field}
+                            <InputNumber
+                                {...field}
                                 style={{ width: "100%" }}
                                 min={0}
                                 step={0.01}
                                 precision={2}
-                                placeholder="Ej: 13.70" />
+                                placeholder="Ej: 13.70"
+                            />
                         )}
                     />
                     {errors.capacidad && <Text type="danger">{errors.capacidad.message}</Text>}
                 </Col>
+
                 {/* Contenido */}
                 <Col span={24}>
                     <Text strong >Contenido</Text>
@@ -181,10 +195,9 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
                         <Text type="danger">{errors.contenido.message}</Text>
                     )}
                 </Col>
-
             </Row>
         </Modal>
     );
 };
 
-export default ModalAgregar;
+export default ModalModificar;

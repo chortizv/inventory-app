@@ -11,13 +11,19 @@ import { createCinta, deleteCinta, getCintaById, getCintas } from '../../service
 import ModalDetalleCinta from './ModalDetalleCinta';
 import ModalAgregar from './ModalAgregar';
 import ModalEliminar from './ModalEliminar';
+import ModalModificar from './ModalModificar';
 
 const Cinta = () => {
     const [cintas, setCintas] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalAgregarOpen, setModalAgregarOpen] = useState(false);
+    const [openEliminar, setOpenEliminar] = useState(false);
+    const [modalModificarOpen, setModalModificarOpen] = useState(false);
+    const [confirmLoadingModificar, setConfirmLoadingModificar] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
+    const [confirmLoadingEliminar, setConfirmLoadingEliminar] = useState(false);
+    const [cintaSeleccionada, setCintaSeleccionada] = useState(null);
     const [cintaId, setCintaId] = useState(null);
 
     const fetchCintas = async () => {
@@ -98,9 +104,6 @@ const Cinta = () => {
         setModalAgregarOpen(false);
     };
 
-    const [openEliminar, setOpenEliminar] = useState(false);
-    const [confirmLoadingEliminar, setConfirmLoadingEliminar] = useState(false);
-    const [cintaSeleccionada, setCintaSeleccionada] = useState(null);
 
     const handleEliminar = async (id) => {
         console.log("Eliminar:", id);
@@ -157,6 +160,61 @@ const Cinta = () => {
         setOpenEliminar(false);
     };
 
+    const handleModificar = async (id) => {
+        console.log("Modificar:", id);
+
+        try {
+
+            const response = await getCintaById(id);
+            setCintaSeleccionada(response);
+
+        } catch (error) {
+
+            console.error("Error al obtener cinta:", error);
+            message.error("Error al conectar con el servidor");
+
+        }
+
+        setModalModificarOpen(true);
+    };
+
+    const handleOkModificar = async (data) => {
+        console.log("Modificar:", data);
+        // try {
+
+        //     const response = await updateCinta(data.id, data);
+
+        //     if (response.status === 200) {
+
+        //         fetchCintas();
+        //         message.success("Cinta modificada correctamente");
+
+        //         setModalModificarOpen(false);
+        //         setConfirmLoadingModificar(false);
+
+        //     } else {
+
+        //         message.error("Error al modificar cinta");
+        //         setModalModificarOpen(false);
+        //         setConfirmLoadingModificar(false);
+
+        //     }
+
+        // } catch (error) {
+
+        //     console.error("Error al modificar cinta:", error);
+        //     message.error("Error al conectar con el servidor");
+
+        //     setModalModificarOpen(false);
+        //     setConfirmLoadingModificar(false);
+
+        // }
+    };
+
+    const handleCancelModificar = () => {
+        setModalModificarOpen(false);
+    };
+
 
     const columns = [
 
@@ -192,6 +250,15 @@ const Cinta = () => {
         },
 
         {
+            title: "Capacidad",
+            dataIndex: "capacidad",
+            key: "capacidad",
+            render: (text) => (
+                <>{text} TB</>
+            )
+        },
+
+        {
             title: 'Acciones',
             key: 'action',
             render: (_, record) => (
@@ -208,6 +275,15 @@ const Cinta = () => {
                     </Tag>
 
                     <Tag
+                        color="green"
+                        variant="outlined"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleModificar(record.id)}
+                    >
+                        <EditOutlined />
+                    </Tag>
+
+                    <Tag
                         color="red"
                         variant="outlined"
                         style={{ cursor: "pointer" }}
@@ -215,6 +291,7 @@ const Cinta = () => {
                     >
                         <DeleteOutlined />
                     </Tag>
+
                 </Space>
 
             ),
@@ -303,6 +380,13 @@ const Cinta = () => {
                     handleOk={handleOkEliminar}
                     confirmLoading={confirmLoadingEliminar}
                     handleCancel={handleCancelEliminar}
+                    cintaSeleccionada={cintaSeleccionada}
+                />
+                <ModalModificar
+                    open={modalModificarOpen}
+                    handleOk={handleOkModificar}
+                    confirmLoading={confirmLoadingModificar}
+                    handleCancel={handleCancelModificar}
                     cintaSeleccionada={cintaSeleccionada}
                 />
             </div>
