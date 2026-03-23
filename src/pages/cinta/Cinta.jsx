@@ -275,7 +275,7 @@ const Cinta = () => {
                     </Tag>
 
                     <Tag
-                        color="green"
+                        color="gold"
                         variant="outlined"
                         style={{ cursor: "pointer" }}
                         onClick={() => handleModificar(record.id)}
