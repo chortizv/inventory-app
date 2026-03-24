@@ -56,7 +56,7 @@ const ModalModificar = ({ open, handleOk, confirmLoading, handleCancel, cintaSel
             ...data,
             estado: estadoTexto,
             fecha_Respaldo: data.fecha_Respaldo
-                ? dayjs(data.fecha_Respaldo).toISOString()
+                ? dayjs(data.fecha_Respaldo).format("YYYY-MM-DDTHH:mm:ss.000[Z]")
                 : null
         };
 

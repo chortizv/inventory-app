@@ -13,6 +13,7 @@ import ModalAgregar from './ModalAgregar';
 import ModalEliminar from './ModalEliminar';
 import ModalModificar from './ModalModificar';
 
+
 const Cinta = () => {
     const [cintas, setCintas] = useState([]);
     const [searchText, setSearchText] = useState('');

@@ -11,6 +11,8 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 
+
+
 const { Text } = Typography;
 
 const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
@@ -34,9 +36,9 @@ const ModalAgregar = ({ open, handleOk, confirmLoading, handleCancel }) => {
 
         const payload = {
             ...data,
-            estado: estadoTexto, // 👈 aquí lo transformas
+            estado: estadoTexto,
             fecha_Respaldo: data.fecha_Respaldo
-                ? dayjs(data.fecha_Respaldo).toISOString()
+                ? dayjs(data.fecha_Respaldo).format("YYYY-MM-DDTHH:mm:ss.000[Z]")
                 : null
         };
 
