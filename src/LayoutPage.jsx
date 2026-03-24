@@ -44,7 +44,7 @@ const items = [
     getItem('Backup Cintas', '14', <SaveOutlined />),
 ];
 
-const LayoutPage = () => {
+const LayoutPage = ({ setIsAuthenticated }) => {
     const [collapsed, setCollapsed] = useState(false);
     const [currentPage, setCurrentPage] = useState('0');
     const navigate = useNavigate();
@@ -70,6 +70,7 @@ const LayoutPage = () => {
 
     const logout = () => {
         localStorage.removeItem("token");
+        setIsAuthenticated(false);
         navigate("/login");
     };
 

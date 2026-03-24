@@ -5,24 +5,34 @@ import Login from "./pages/login/Login";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsAuthenticated(token === "true");
+    setIsAuthenticated(!!token);
+    setLoading(false);
   }, []);
+
+  if (loading) return null;
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/login"
-          element={<Login setIsAuthenticated={setIsAuthenticated} />}
+          element={
+            !isAuthenticated ? (
+              <Login setIsAuthenticated={setIsAuthenticated} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
 
         <Route
-          path="/"
+          path="/*"
           element={
-            isAuthenticated ? <LayoutPage /> : <Navigate to="/login" />
+            isAuthenticated ? <LayoutPage setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/login" />
           }
         />
 

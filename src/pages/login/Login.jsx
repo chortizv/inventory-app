@@ -23,12 +23,10 @@ const Login = ({ setIsAuthenticated }) => {
         try {
             const response = await login(data);
 
-            localStorage.setItem("token", "true");
+            localStorage.setItem("token", response.token);
 
-            // 🔥 actualiza estado global
             setIsAuthenticated(true);
             reset();
-
             navigate("/");
 
         } catch (error) {
