@@ -30,15 +30,15 @@ export const createCinta = async (cinta) => {
     }
 }
 
-// export const updateCinta = async (id, cinta) => {
-//     try {
-//         const response = await axiosInstance.put(`/Cinta/cinta/${id}`, cinta);
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error al actualizar la cinta:', error);
-//         throw error;
-//     }
-// }
+export const updateCinta = async (cinta) => {
+    try {
+        const response = await axiosInstance.put('/Cinta/modificar', cinta);
+        return response;
+    } catch (error) {
+        console.error('Error al actualizar la cinta:', error);
+        throw error;
+    }
+}
 
 export const deleteCinta = async (id) => {
     try {

@@ -7,7 +7,7 @@ import {
     EditOutlined,
     EyeOutlined
 } from '@ant-design/icons';
-import { createCinta, deleteCinta, getCintaById, getCintas } from '../../services/cintasService';
+import { createCinta, deleteCinta, getCintaById, getCintas, updateCinta } from '../../services/cintasService';
 import ModalDetalleCinta from './ModalDetalleCinta';
 import ModalAgregar from './ModalAgregar';
 import ModalEliminar from './ModalEliminar';
@@ -180,35 +180,35 @@ const Cinta = () => {
 
     const handleOkModificar = async (data) => {
         console.log("Modificar:", data);
-        // try {
+        try {
 
-        //     const response = await updateCinta(data.id, data);
+            const response = await updateCinta(data);
 
-        //     if (response.status === 200) {
+            if (response.status === 200) {
 
-        //         fetchCintas();
-        //         message.success("Cinta modificada correctamente");
+                fetchCintas();
+                message.success("Cinta modificada correctamente");
 
-        //         setModalModificarOpen(false);
-        //         setConfirmLoadingModificar(false);
+                setModalModificarOpen(false);
+                setConfirmLoadingModificar(false);
 
-        //     } else {
+            } else {
 
-        //         message.error("Error al modificar cinta");
-        //         setModalModificarOpen(false);
-        //         setConfirmLoadingModificar(false);
+                message.error("Error al modificar cinta");
+                setModalModificarOpen(false);
+                setConfirmLoadingModificar(false);
 
-        //     }
+            }
 
-        // } catch (error) {
+        } catch (error) {
 
-        //     console.error("Error al modificar cinta:", error);
-        //     message.error("Error al conectar con el servidor");
+            console.error("Error al modificar cinta:", error);
+            message.error("Error al conectar con el servidor");
 
-        //     setModalModificarOpen(false);
-        //     setConfirmLoadingModificar(false);
+            setModalModificarOpen(false);
+            setConfirmLoadingModificar(false);
 
-        // }
+        }
     };
 
     const handleCancelModificar = () => {
