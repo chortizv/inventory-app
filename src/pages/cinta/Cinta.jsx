@@ -220,12 +220,6 @@ const Cinta = () => {
     const columns = [
 
         {
-            title: "Id",
-            dataIndex: "id",
-            key: "id"
-        },
-
-        {
             title: "Codigo",
             dataIndex: "codigo",
             key: "codigo"
@@ -362,6 +356,12 @@ const Cinta = () => {
                     columns={columns}
                     dataSource={filteredCintas}
                     rowKey="id"
+                    pagination={{
+                        showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} de ${total}`,
+                        size: "small",
+                    }}
+                    style={{ height: "calc(100vh - 350px)" }}
                 />
 
                 <ModalDetalleCinta
